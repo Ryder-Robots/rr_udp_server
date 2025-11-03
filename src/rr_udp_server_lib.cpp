@@ -3,12 +3,19 @@
 namespace rr_udp_server
 {
 
-RrUdpServerLib::RrUdpServerLib()
-{
+void RrUdpServerLib::init() {
+
 }
 
-RrUdpServerLib::~RrUdpServerLib()
-{
+RrUdpServerLib::~RrUdpServerLib() {}
+
+/**
+ * Read udp messages
+ */
+void RrUdpServerLib::subscriber(const udp_msgs::msg::UdpPacket::SharedPtr packet) {
+    RCLCPP_DEBUG(logger_, "received message image msg");
 }
+
+void RrUdpServerLib::publisher() {}
 
 }  // namespace rr_udp_server

@@ -11,6 +11,8 @@ find_package(ament_cmake_ros REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(rr_interfaces REQUIRED)
+find_package(udp_msgs REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
 
 add_library(rr_udp_server_lib src/rr_udp_server_lib.cpp)
 add_library(rr_udp_server::rr_udp_server_lib ALIAS rr_udp_server_lib)
@@ -21,6 +23,7 @@ target_include_directories(rr_udp_server_lib PUBLIC
 ament_target_dependencies(
   rr_udp_server_lib
   "rclcpp"
+  "udp_msgs"
   "std_msgs"
   "rr_interfaces"
 )
@@ -41,7 +44,7 @@ install(
   RUNTIME DESTINATION bin
 )
 
-add_executable(rr_udp_server_node src/rr_udp_server_node.cpp)
+add_executable(rr_udp_server_node src/main.cpp)
 target_include_directories(rr_udp_server_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include/${PROJECT_NAME}>)
