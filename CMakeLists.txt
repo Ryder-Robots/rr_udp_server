@@ -23,7 +23,13 @@ protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_FILES})
 # Include directories for protobuf headers and generated headers
 include_directories(${Protobuf_INCLUDE_DIRS} ${CMAKE_CURRENT_BINARY_DIR})
 
-add_library(rr_udp_server_lib src/rr_udp_server_lib.cpp ${PROTO_SRCS} ${PROTO_HDRS})
+add_library(rr_udp_server_lib 
+  src/rr_udp_server_lib.cpp 
+  src/rr_udp_server_node.cpp 
+  src/deserializer_fact.cpp
+  ${PROTO_SRCS} 
+  ${PROTO_HDRS})
+
 add_library(rr_udp_server::rr_udp_server_lib ALIAS rr_udp_server_lib)
 target_compile_features(rr_udp_server_lib PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 target_include_directories(rr_udp_server_lib PUBLIC

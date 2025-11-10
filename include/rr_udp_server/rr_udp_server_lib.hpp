@@ -13,6 +13,9 @@ namespace rr_udp_server
 #define RR_UDP_SVR_MSG_CLASS udp_msgs::msg::UdpPacket
 #define RR_UDP_SVR_READ_TOPIC "/udp_read"
 
+/**
+ * @deprecated
+ */
 class RrUdpServerLib : public rclcpp::Node
 {
  public:

@@ -6,7 +6,7 @@ message Joystick {
 }
 
 message Duration {
-    int32 sec = 1;
+  int32 sec = 1;
 	uint32 nanosec = 2;
 }
 
