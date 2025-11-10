@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+message Joystick {
+  repeated float axes = 1;
+  repeated int32 buttons = 2;
+}
+
+message Duration {
+    int32 sec = 1;
+	uint32 nanosec = 2;
+}
+
+message Heartbeat {
+    Duration duration = 1;
+}
+
+message InboundMessage {
+  oneof data {
+    Joystick joystick = 1;
+    Heartbeat heartbeat = 2;
+  }
+
+  // Digital signature of the serialized 'data' field or whole message
+  bytes signature = 3;  
+}

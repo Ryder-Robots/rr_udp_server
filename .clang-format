@@ -1,0 +1,12 @@
+BasedOnStyle: Google
+IndentWidth: 2
+TabWidth: 2
+UseTab: Never
+AllowShortFunctionsOnASingleLine: Inline
+BreakAfterReturnType: None
+PointerAlignment: Left
+ColumnLimit: 80
+SpacesBeforeTrailingComments: 1
+ConstructorInitializerIndentWidth: 2
+DerivePointerAlignment: false
+AllowShortIfStatementsOnASingleLine: false
