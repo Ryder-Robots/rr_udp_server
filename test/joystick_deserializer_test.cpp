@@ -23,7 +23,20 @@ class TestController : public testing::Test {
 };
 
 TEST_F(TestController, clear) {
-  EXPECT_TRUE(true);
+  // clear the buffers fist and check that size is correct.
+  deserializer_->clear();
+
+  std::shared_ptr<RrJoystickDeserializer> jd =
+      std::static_pointer_cast<RrJoystickDeserializer>(deserializer_);
+  EXPECT_EQ(jd->get_axes().size(), jd->AXES_SZ);
+  EXPECT_EQ(jd->get_buttons().size(), jd->BUTTONS_SZ);
+  for (float value : jd->get_axes()) {
+    EXPECT_EQ(0, value);
+  }
+
+  for (int value : jd->get_buttons()) {
+    EXPECT_EQ(0, value);
+  }
 }
 
 int main(int argc, char** argv) {
