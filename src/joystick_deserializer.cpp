@@ -2,11 +2,19 @@
 
 using namespace rr_udp_server;
 
-JoystickDeserializer::JoystickDeserializer() {}
+RrJoystickDeserializer::RrJoystickDeserializer() {}
 
-void JoystickDeserializer::clear() {}
+void RrJoystickDeserializer::clear() {}
 
-void JoystickDeserializer::deserialize(
+void RrJoystickDeserializer::deserialize(
     const udp_msgs::msg::UdpPacket udp_packet) {}
 
-bool JoystickDeserializer::update_state(rclcpp::ClientBase::SharedPtr client) {}
+bool RrJoystickDeserializer::update_state(rclcpp::ClientBase::SharedPtr client) {}
+
+const std::vector<float> RrJoystickDeserializer::get_axes() {
+  return axes_;
+}
+
+const std::vector<int> RrJoystickDeserializer::get_buttons() {
+  return buttons_;
+}

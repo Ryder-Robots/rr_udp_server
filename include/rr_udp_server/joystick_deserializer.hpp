@@ -15,11 +15,11 @@ namespace rr_udp_server {
  * reference:
  * https://github.com/ros-drivers/joystick_drivers/blob/ros2/joy/README.md
  */
-class JoystickDeserializer : public RrUdpDeserializer {
+class RrJoystickDeserializer : public RrUdpDeserializer {
  public:
-  JoystickDeserializer();
+  RrJoystickDeserializer();
 
-  ~JoystickDeserializer() = default;
+  ~RrJoystickDeserializer() = default;
 
   /**
    * @fn clear
@@ -50,6 +50,24 @@ class JoystickDeserializer : public RrUdpDeserializer {
   const int MIN_BUTTON = 0;
   const float MAX_AXES = 1;
   const float MIN_AXES = -1;
+
+
+  /**
+   * @fn get_axes
+   * @brief returns axes vector, so that it can be checked. 
+   * 
+   * NOTE this is ony expected for debugging and testing purposes, it shoulds not be called directly
+   * by the controller.
+   */
+  const std::vector<float> get_axes();
+
+  /**
+   * @fn get_buttons
+   * @brief return the button vector.
+   * 
+   * NOTE this is only expected for testing purposes, it should not be called directly by the controller.
+   */
+  const std::vector<int> get_buttons();
 
  private:
   /**
