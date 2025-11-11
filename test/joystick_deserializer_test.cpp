@@ -18,14 +18,12 @@ class TestController : public testing::Test {
   void SetUp() override { rclcpp::init(0, nullptr); }
 
   void TearDown() override { rclcpp::shutdown(); }
-  // std::shared_ptr<RrUdpDeserializer> deserializer_ =
-  // std::make_shared<JoystickDeserializer>();
-
-  RrJoystickDeserializer deserializer_;
+  std::shared_ptr<RrUdpDeserializer> deserializer_ =
+      std::make_shared<RrJoystickDeserializer>();
 };
 
 TEST_F(TestController, clear) {
-    EXPECT_TRUE(true);
+  EXPECT_TRUE(true);
 }
 
 int main(int argc, char** argv) {

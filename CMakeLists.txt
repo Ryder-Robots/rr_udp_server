@@ -15,13 +15,13 @@ find_package(udp_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(Protobuf REQUIRED)
 
-# set(PROTO_FILES proto/inbound.proto)
+set(PROTO_FILES proto/inbound.proto)
 
-# # Generate source and header from proto files
-# protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_FILES})
+# # Generate source and header from proto files 
+protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_FILES})
 
 # # Include directories for protobuf headers and generated headers
-# include_directories(${Protobuf_INCLUDE_DIRS} ${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${Protobuf_INCLUDE_DIRS} ${CMAKE_CURRENT_BINARY_DIR})
 
 add_library(${PROJECT_NAME}_lib 
   src/rr_udp_server_node.cpp 
@@ -50,15 +50,6 @@ add_executable(${PROJECT_NAME}_node src/main.cpp)
 
 target_link_libraries(${PROJECT_NAME}_node ${PROJECT_NAME}_lib)
 
-
-# Causes the visibility macros to use dllexport rather than dllimport,
-# which is appropriate when building the dll but not consuming it.
-# target_compile_definitions(rr_udp_server_lib PRIVATE "RR_UDP_SERVER_BUILDING_LIBRARY")
-
-# install(
-#   DIRECTORY include/
-#   DESTINATION include/${PROJECT_NAME}
-# )
 install(TARGETS 
   ${PROJECT_NAME}_lib
   ${PROJECT_NAME}_node
@@ -78,25 +69,5 @@ if(BUILD_TESTING)
   # ament_lint_auto_find_test_dependencies()
   add_subdirectory(test)
 endif()
-
-
-# target_include_directories(rr_udp_server_node PUBLIC
-#   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-#   $<INSTALL_INTERFACE:include/${PROJECT_NAME}>)
-
-# install(TARGETS ${PROJECT_NAME}_node
-#   DESTINATION lib/${PROJECT_NAME})
-
-
-
-# ament_export_include_directories(
-#   "include/${PROJECT_NAME}"
-# )
-# ament_export_libraries(
-#   ${PROJECT_NAME}_lib
-# )
-# ament_export_targets(
-#   export_${PROJECT_NAME}
-# )
 
 ament_package()
