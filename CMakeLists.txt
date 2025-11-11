@@ -27,6 +27,7 @@ add_library(rr_udp_server_lib
   src/rr_udp_server_lib.cpp 
   src/rr_udp_server_node.cpp 
   src/deserializer_fact.cpp
+  src/joystick_deserializer.cpp
   ${PROTO_SRCS} 
   ${PROTO_HDRS})
 
