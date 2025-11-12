@@ -34,6 +34,12 @@ class RrUdpDeserializer {
    * @brief send message to state service.
    */
   virtual void update_state(rclcpp::ClientBase::SharedPtr client) = 0;
+
+  /**
+   * @fn err_str
+   * @brief returns string containing error in the event that deserialize returns false.
+   */
+  virtual const std::string err_str() = 0;
 };
 } // namespace rr_udp_server
 

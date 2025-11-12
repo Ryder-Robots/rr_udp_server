@@ -18,6 +18,7 @@ void RrJoystickDeserializer::reset() {
   // erase all elements
   axes_.erase(axes_.begin(), axes_.end());
   buttons_.erase(buttons_.begin(), buttons_.end());
+  err_ = "";
 
   // resize vectors back to defaults.
   axes_.resize(AXES_SZ);
@@ -28,8 +29,18 @@ void RrJoystickDeserializer::reset() {
   std::fill(buttons_.begin(), buttons_.end(), 0);
 }
 
+/**
+ * @fn err_str
+ * @brief returns last error code, this will be reset once reset is called.
+ */
+const std::string RrJoystickDeserializer::err_str() {
+  return err_;
+}
+
 bool RrJoystickDeserializer::deserialize(
-    const udp_msgs::msg::UdpPacket udp_packet) {return false;}
+    const udp_msgs::msg::UdpPacket udp_packet) {
+      return false;
+}
 
 void RrJoystickDeserializer::update_state(rclcpp::ClientBase::SharedPtr client) {}
 

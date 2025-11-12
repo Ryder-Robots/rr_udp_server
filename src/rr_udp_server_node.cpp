@@ -32,7 +32,7 @@ void RrUdpServerNode::subscriber_cb(const udp_msgs::msg::UdpPacket packet) {
     // check for integrity before updating the state
     if (!deserilizer->deserialize(packet)) {
       RCLCPP_ERROR(this->get_logger(),
-                   "dropping packet: integrity errors found in inbound packet");
+                   "dropping packet: integrity errors found in inbound packet: %s", deserilizer->err_str().c_str());
       err_++;
       return;
     }

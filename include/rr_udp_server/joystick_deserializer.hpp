@@ -35,6 +35,14 @@ class RrJoystickDeserializer : public RrUdpDeserializer {
   bool deserialize(const udp_msgs::msg::UdpPacket udp_packet) override;
 
   /**
+   * @fn err_str
+   * @brief this message is set during input validation of the object in the event that something has gone wrong.
+   * 
+   * If deserialize returns false, controller will call this method to update log with perinent information.
+   */
+  const std::string err_str() override;
+
+  /**
    * @fn update_state
    * @brief send request to state manager joy service.
    *
@@ -51,33 +59,28 @@ class RrJoystickDeserializer : public RrUdpDeserializer {
   const float MAX_AXES = 1;
   const float MIN_AXES = -1;
 
-
   /**
    * @fn get_axes
-   * @brief returns axes vector, so that it can be checked. 
-   * 
-   * NOTE this is ony expected for debugging and testing purposes, it shoulds not be called directly
-   * by the controller.
+   * @brief returns axes vector, so that it can be checked.
+   *
+   * NOTE this is ony expected for debugging and testing purposes, it shoulds
+   * not be called directly by the controller.
    */
   const std::vector<float> get_axes();
 
   /**
    * @fn get_buttons
    * @brief return the button vector.
-   * 
-   * NOTE this is only expected for testing purposes, it should not be called directly by the controller.
+   *
+   * NOTE this is only expected for testing purposes, it should not be called
+   * directly by the controller.
    */
   const std::vector<int> get_buttons();
 
  private:
-  /**
-   * check that all values submitted by inbound request fit into clamped
-   * parameters.
-   */
-  bool validate();
-
   std::vector<float> axes_;  // inbound axes definition.
   std::vector<int> buttons_; // inbound buttons.
+  std::string err_ = "";
 };
 } // namespace rr_udp_server
 

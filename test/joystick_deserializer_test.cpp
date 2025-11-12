@@ -68,7 +68,12 @@ TEST_F(TestController, deserialize1) {
   udp_packet.data = buffer;
   deserializer_->deserialize(udp_packet);
 
-  EXPECT_TRUE(true);
+  std::shared_ptr<RrJoystickDeserializer> jd = std::static_pointer_cast<RrJoystickDeserializer>(deserializer_);
+
+  EXPECT_EQ(jd->get_axes()[0], 0.5f);
+  EXPECT_EQ(jd->get_axes()[1], -0.7f);
+  EXPECT_EQ(jd->get_buttons()[0], 1);
+  EXPECT_EQ(jd->get_buttons()[1], 0);
 }
 
 int main(int argc, char** argv) {
