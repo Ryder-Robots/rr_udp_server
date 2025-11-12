@@ -66,7 +66,7 @@ TEST_F(TestController, deserialize1) {
   std::vector<uint8_t> buffer(packet.ByteSizeLong());
   packet.SerializeToArray(buffer.data(), static_cast<int>(packet.ByteSizeLong()));
   udp_packet.data = buffer;
-  deserializer_->deserialize(udp_packet);
+  EXPECT_EQ(deserializer_->deserialize(udp_packet), RrUdpDeserializer::OK());
 
   std::shared_ptr<RrJoystickDeserializer> jd = std::static_pointer_cast<RrJoystickDeserializer>(deserializer_);
 

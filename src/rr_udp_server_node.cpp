@@ -14,7 +14,7 @@ void RrUdpServerNode::init() {
 /**
  * called for each inbound packet, when packet recieved:
  *   1. Attempts to retrieve deserializer from the deserializer-factory
- *   2. if available, then 
+ *   2. if available, then
  *   3.    deserializer is reset.
  *   4.    packet is deserializecd
  *   5.    packet is sent to state service.
@@ -30,19 +30,31 @@ void RrUdpServerNode::subscriber_cb(const udp_msgs::msg::UdpPacket packet) {
     deserilizer->reset();
 
     // check for integrity before updating the state
-    if (!deserilizer->deserialize(packet)) {
-      RCLCPP_ERROR(this->get_logger(),
-                   "dropping packet: integrity errors found in inbound packet: %s", deserilizer->err_str().c_str());
-      err_++;
-      return;
+    uint8_t status = RrUdpDeserializer::OK();
+    if (status = deserilizer->deserialize(packet) != RrUdpDeserializer::OK()) {
+      if (status == RrUdpDeserializer::ERROR()) {
+        RCLCPP_ERROR(
+            this->get_logger(),
+            "dropping packet: integrity errors found in inbound packet: %s",
+            deserilizer->err_str().c_str());
+        err_++;
+        return;
+      } else {
+        RCLCPP_WARN(
+            this->get_logger(),
+            "keeping packet: integrity warnings found in inbound packet: %s",
+            deserilizer->err_str().c_str());
+      }
     }
 
-    // To allow ROS2 middleware to keep reference count to services within the node, services are
-    // sent back to the node via factory. Therefore they need to be sent to the deserializer to
-    // send request to state service
+    // To allow ROS2 middleware to keep reference count to services within the
+    // node, services are sent back to the node via factory. Therefore they need
+    // to be sent to the deserializer to send request to state service
     deserilizer->update_state(clients_[key]);
     rx_++;
   } else {
-    RCLCPP_WARN(this->get_logger(), "dropping packet: no deserializer available for this type of packet");
+    RCLCPP_ERROR(
+        this->get_logger(),
+        "dropping packet: no deserializer available for this type of packet");
   }
 }

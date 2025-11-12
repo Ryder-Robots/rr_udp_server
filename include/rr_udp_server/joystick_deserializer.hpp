@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "generated/inbound.pb.h"
 #include "rr_udp_server/deserializer.hpp"
 #include "sensor_msgs/msg/joy.hpp"
 
@@ -32,7 +33,7 @@ class RrJoystickDeserializer : public RrUdpDeserializer {
    * @brief deserialize udp_packet data section and update axes, and buttons
    * vectors.
    */
-  bool deserialize(const udp_msgs::msg::UdpPacket udp_packet) override;
+  u_int8_t deserialize(const udp_msgs::msg::UdpPacket udp_packet) override;
 
   /**
    * @fn err_str
@@ -52,8 +53,8 @@ class RrJoystickDeserializer : public RrUdpDeserializer {
   void update_state(rclcpp::ClientBase::SharedPtr client) override;
 
   // constants
-  const size_t BUTTONS_SZ = 20;
-  const size_t AXES_SZ = 5;
+  const int BUTTONS_SZ = 20;
+  const int AXES_SZ = 5;
   const int MAX_BUTTON = 1;
   const int MIN_BUTTON = 0;
   const float MAX_AXES = 1;

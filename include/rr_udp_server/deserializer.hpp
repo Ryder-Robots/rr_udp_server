@@ -24,9 +24,10 @@ class RrUdpDeserializer {
    * @fn init
    * @param udp_packet inbound packet to deserialize
    * @brief deserialize udp_packet
-   * @return true if state updated, otherwise return false.
+   * @return returns status code, if code is not 0 then state will be set, but
+   * warning message will be generated.
    */
-  virtual bool deserialize(const udp_msgs::msg::UdpPacket udp_packet) = 0;
+  virtual uint8_t deserialize(const udp_msgs::msg::UdpPacket udp_packet) = 0;
 
   /**
    * @fn update_state
@@ -37,9 +38,14 @@ class RrUdpDeserializer {
 
   /**
    * @fn err_str
-   * @brief returns string containing error in the event that deserialize returns false.
+   * @brief returns string containing error in the event that deserialize
+   * returns false.
    */
   virtual const std::string err_str() = 0;
+
+  static const uint8_t OK() { return 0; }
+  static const uint8_t WARN() { return 1; }
+  static const uint8_t ERROR() { return 2; }
 };
 } // namespace rr_udp_server
 
