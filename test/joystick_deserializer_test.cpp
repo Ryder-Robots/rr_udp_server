@@ -64,16 +64,47 @@ TEST_F(TestController, deserialize1) {
   udp_packet.src_port = 57410;
 
   std::vector<uint8_t> buffer(packet.ByteSizeLong());
-  packet.SerializeToArray(buffer.data(), static_cast<int>(packet.ByteSizeLong()));
+  packet.SerializeToArray(buffer.data(),
+                          static_cast<int>(packet.ByteSizeLong()));
   udp_packet.data = buffer;
   EXPECT_EQ(deserializer_->deserialize(udp_packet), RrUdpDeserializer::OK());
 
-  std::shared_ptr<RrJoystickDeserializer> jd = std::static_pointer_cast<RrJoystickDeserializer>(deserializer_);
+  std::shared_ptr<RrJoystickDeserializer> jd =
+      std::static_pointer_cast<RrJoystickDeserializer>(deserializer_);
 
   EXPECT_EQ(jd->get_axes()[0], 0.5f);
   EXPECT_EQ(jd->get_axes()[1], -0.7f);
   EXPECT_EQ(jd->get_buttons()[0], 1);
   EXPECT_EQ(jd->get_buttons()[1], 0);
+}
+
+TEST_F(TestController, deserialize2) {
+  InboundMessage packet;
+  packet.clear_data();
+  Joystick* joystick_data = packet.mutable_joystick();
+
+  joystick_data->add_axes(1.5f);
+  joystick_data->add_axes(-1.7f);
+
+  // Initialize joystick buttons (example values)
+  joystick_data->add_buttons(1);
+  joystick_data->add_buttons(-1);
+
+  // Add UDP packet
+  // attach inbound message to packet
+  udp_msgs::msg::UdpPacket udp_packet;
+  rclcpp::Clock clock;
+  auto current_time = clock.now();
+  udp_packet.header.frame_id = "joy_ps4";
+  udp_packet.header.stamp = clock.now();
+  udp_packet.address = "127.0.0.1";
+  udp_packet.src_port = 57410;
+
+  std::vector<uint8_t> buffer(packet.ByteSizeLong());
+  packet.SerializeToArray(buffer.data(),
+                          static_cast<int>(packet.ByteSizeLong()));
+  udp_packet.data = buffer;
+  EXPECT_EQ(deserializer_->deserialize(udp_packet), RrUdpDeserializer::ERROR());
 }
 
 int main(int argc, char** argv) {
