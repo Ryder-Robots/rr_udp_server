@@ -43,9 +43,9 @@ class RrUdpDeserializer {
    */
   virtual const std::string err_str() = 0;
 
-  static const uint8_t OK() { return 0; }
-  static const uint8_t WARN() { return 1; }
-  static const uint8_t ERROR() { return 2; }
+  static uint8_t OK() { return 0; }
+  static uint8_t WARN() { return 1; }
+  static uint8_t ERROR() { return 2; }
 };
 } // namespace rr_udp_server
 

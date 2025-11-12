@@ -37,6 +37,16 @@ const std::string RrJoystickDeserializer::err_str() {
   return err_;
 }
 
+/**
+ * @fn deserialize
+ * @brief deserialize the packet and load the buffers.
+ * 
+ * Verify that axes, and buttons do not exceed speicifications that are documented in
+ * https://github.com/ros-drivers/joystick_drivers/blob/ros2/joy/README.md
+ * 
+ * 
+ * @param udp_packet inbound packet.
+ */
 uint8_t RrJoystickDeserializer::deserialize(
     const udp_msgs::msg::UdpPacket udp_packet) {
   uint8_t status = OK();

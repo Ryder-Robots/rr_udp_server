@@ -31,7 +31,7 @@ void RrUdpServerNode::subscriber_cb(const udp_msgs::msg::UdpPacket packet) {
 
     // check for integrity before updating the state
     uint8_t status = RrUdpDeserializer::OK();
-    if (status = deserilizer->deserialize(packet) != RrUdpDeserializer::OK()) {
+    if ((status = deserilizer->deserialize(packet)) != RrUdpDeserializer::OK()) {
       if (status == RrUdpDeserializer::ERROR()) {
         RCLCPP_ERROR(
             this->get_logger(),
