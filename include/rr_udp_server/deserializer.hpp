@@ -34,7 +34,8 @@ class RrUdpDeserializer {
    * @param client as derived by factory used to send the request
    * @brief send message to state service.
    */
-  virtual void update_state(rclcpp::ClientBase::SharedPtr client) = 0;
+  virtual uint8_t update_state(rclcpp::ClientBase::SharedPtr client,
+                               std::shared_ptr<rclcpp::Node> node) = 0;
 
   /**
    * @fn err_str

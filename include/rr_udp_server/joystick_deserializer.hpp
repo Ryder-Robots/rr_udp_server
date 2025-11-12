@@ -6,6 +6,7 @@
 #include "generated/inbound.pb.h"
 #include "rr_udp_server/deserializer.hpp"
 #include "sensor_msgs/msg/joy.hpp"
+#include "rr_interfaces/srv/joy.hpp"
 
 namespace rr_udp_server {
 
@@ -50,7 +51,7 @@ class RrJoystickDeserializer : public RrUdpDeserializer {
    * convert vectors into sensor_msg::msg::Joy message and submit to state
    * service.
    */
-  void update_state(rclcpp::ClientBase::SharedPtr client) override;
+  uint8_t update_state(rclcpp::ClientBase::SharedPtr client, std::shared_ptr<rclcpp::Node> node) override;
 
   // constants
   const int BUTTONS_SZ = 20;
@@ -78,10 +79,15 @@ class RrJoystickDeserializer : public RrUdpDeserializer {
    */
   const std::vector<int> get_buttons();
 
+  // This should be moved to a common base, but it will need to be templated.
+  // std::vector<rclcpp::Client<rr_interfaces::srv::Joy>::FutureAndRequestId> futures_;
+
  private:
   std::vector<float> axes_;  // inbound axes definition.
   std::vector<int> buttons_; // inbound buttons.
   std::string err_ = "";
+
+  uint8_t FT_RSLT_ERR_ = RrUdpDeserializer::OK();
 };
 } // namespace rr_udp_server
 

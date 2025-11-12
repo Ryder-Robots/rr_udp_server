@@ -5,8 +5,8 @@ using namespace rr_udp_server;
 void RrUdpServerNode::init() {
   // get all the clients and create a reference
   // using safe approach
-  rclcpp::Node* parent = static_cast<rclcpp::Node*>(this);
-  clients_ = factory_.get_deserializers(parent);
+  // rclcpp::Node* parent = static_cast<rclcpp::Node*>(this);
+  clients_ = factory_.get_deserializers(this->shared_from_this());
 
   // TODO: link callback so that it gets during packet arrival
 }
@@ -31,7 +31,8 @@ void RrUdpServerNode::subscriber_cb(const udp_msgs::msg::UdpPacket packet) {
 
     // check for integrity before updating the state
     uint8_t status = RrUdpDeserializer::OK();
-    if ((status = deserilizer->deserialize(packet)) != RrUdpDeserializer::OK()) {
+    if ((status = deserilizer->deserialize(packet)) !=
+        RrUdpDeserializer::OK()) {
       if (status == RrUdpDeserializer::ERROR()) {
         RCLCPP_ERROR(
             this->get_logger(),
@@ -50,7 +51,14 @@ void RrUdpServerNode::subscriber_cb(const udp_msgs::msg::UdpPacket packet) {
     // To allow ROS2 middleware to keep reference count to services within the
     // node, services are sent back to the node via factory. Therefore they need
     // to be sent to the deserializer to send request to state service
-    deserilizer->update_state(clients_[key]);
+    if (deserilizer->update_state(clients_[key], this->shared_from_this()) !=
+        RrUdpDeserializer::OK()) {
+      RCLCPP_ERROR(this->get_logger(),
+                   "dropping packet: could not write the packet to service: %s",
+                   deserilizer->err_str().c_str());
+      err_++;
+      return;
+    }
     rx_++;
   } else {
     RCLCPP_ERROR(

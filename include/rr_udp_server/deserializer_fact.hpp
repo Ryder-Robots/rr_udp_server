@@ -32,7 +32,7 @@ class RrDeserializerFact {
    * each client remains during life cycle of node.
    */
   std::vector<rclcpp::ClientBase::SharedPtr> get_deserializers(
-      rclcpp::Node *node);
+      std::shared_ptr<rclcpp::Node> node);
 };
 } // namespace rr_udp_server
 
