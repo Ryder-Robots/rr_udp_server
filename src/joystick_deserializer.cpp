@@ -7,14 +7,14 @@ RrJoystickDeserializer::RrJoystickDeserializer() {
   axes_.reserve(AXES_SZ);
   buttons_.reserve(BUTTONS_SZ);
 
-  clear();
+  reset();
 }
 
 /*
  * erase all elements and set them to default size. values are all initally
  * set as zero, 
  */
-void RrJoystickDeserializer::clear() {
+void RrJoystickDeserializer::reset() {
   // erase all elements
   axes_.erase(axes_.begin(), axes_.end());
   buttons_.erase(buttons_.begin(), buttons_.end());
@@ -28,10 +28,10 @@ void RrJoystickDeserializer::clear() {
   std::fill(buttons_.begin(), buttons_.end(), 0);
 }
 
-void RrJoystickDeserializer::deserialize(
-    const udp_msgs::msg::UdpPacket udp_packet) {}
+bool RrJoystickDeserializer::deserialize(
+    const udp_msgs::msg::UdpPacket udp_packet) {return false;}
 
-bool RrJoystickDeserializer::update_state(rclcpp::ClientBase::SharedPtr client) {}
+void RrJoystickDeserializer::update_state(rclcpp::ClientBase::SharedPtr client) {}
 
 const std::vector<float> RrJoystickDeserializer::get_axes() {
   return axes_;

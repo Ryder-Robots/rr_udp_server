@@ -22,17 +22,17 @@ class RrJoystickDeserializer : public RrUdpDeserializer {
   ~RrJoystickDeserializer() = default;
 
   /**
-   * @fn clear
+   * @fn reset
    * @brief reset buttons and axes vectors.
    */
-  void clear() override;
+  void reset() override;
 
   /**
    * @fn deserialize
    * @brief deserialize udp_packet data section and update axes, and buttons
    * vectors.
    */
-  void deserialize(const udp_msgs::msg::UdpPacket udp_packet) override;
+  bool deserialize(const udp_msgs::msg::UdpPacket udp_packet) override;
 
   /**
    * @fn update_state
@@ -41,7 +41,7 @@ class RrJoystickDeserializer : public RrUdpDeserializer {
    * convert vectors into sensor_msg::msg::Joy message and submit to state
    * service.
    */
-  bool update_state(rclcpp::ClientBase::SharedPtr client) override;
+  void update_state(rclcpp::ClientBase::SharedPtr client) override;
 
   // constants
   const size_t BUTTONS_SZ = 20;

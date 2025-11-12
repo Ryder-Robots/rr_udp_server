@@ -3,7 +3,9 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include "generated/inbound.pb.h"
 #include "rclcpp/rclcpp.hpp"
+#include "udp_msgs/msg/udp_packet.hpp"
 
 using namespace rr_udp_server;
 
@@ -23,8 +25,8 @@ class TestController : public testing::Test {
 };
 
 TEST_F(TestController, clear) {
-  // clear the buffers fist and check that size is correct.
-  deserializer_->clear();
+  // reset the buffers fist and check that size is correct.
+  deserializer_->reset();
 
   std::shared_ptr<RrJoystickDeserializer> jd =
       std::static_pointer_cast<RrJoystickDeserializer>(deserializer_);
@@ -37,6 +39,36 @@ TEST_F(TestController, clear) {
   for (int value : jd->get_buttons()) {
     EXPECT_EQ(0, value);
   }
+}
+
+TEST_F(TestController, deserialize1) {
+  InboundMessage packet;
+  packet.clear_data();
+  Joystick* joystick_data = packet.mutable_joystick();
+
+  joystick_data->add_axes(0.5f);
+  joystick_data->add_axes(-0.7f);
+
+  // Initialize joystick buttons (example values)
+  joystick_data->add_buttons(1);
+  joystick_data->add_buttons(0);
+
+  // Add UDP packet
+  // attach inbound message to packet
+  udp_msgs::msg::UdpPacket udp_packet;
+  rclcpp::Clock clock;
+  auto current_time = clock.now();
+  udp_packet.header.frame_id = "joy_ps4";
+  udp_packet.header.stamp = clock.now();
+  udp_packet.address = "127.0.0.1";
+  udp_packet.src_port = 57410;
+
+  std::vector<uint8_t> buffer(packet.ByteSizeLong());
+  packet.SerializeToArray(buffer.data(), static_cast<int>(packet.ByteSizeLong()));
+  udp_packet.data = buffer;
+  deserializer_->deserialize(udp_packet);
+
+  EXPECT_TRUE(true);
 }
 
 int main(int argc, char** argv) {

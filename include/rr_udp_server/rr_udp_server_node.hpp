@@ -27,5 +27,11 @@ class RrUdpServerNode : public rclcpp::Node {
   std::vector<rclcpp::ClientBase::SharedPtr> clients_;
 
   RrDeserializerFact factory_;
+
+  // following values are kept for heartbeat health messages
+  long rx_ = 0;
+  long tx_ = 0;
+  long err_ = 0;
+  
 };
 } // namespace rr_udp_server

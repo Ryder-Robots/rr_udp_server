@@ -18,7 +18,10 @@ find_package(Protobuf REQUIRED)
 set(PROTO_FILES proto/inbound.proto)
 
 # # Generate source and header from proto files 
-protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_FILES})
+protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS 
+  ${PROTO_FILES}
+  PROTOC_OUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated"
+)
 
 # # Include directories for protobuf headers and generated headers
 include_directories(${Protobuf_INCLUDE_DIRS} ${CMAKE_CURRENT_BINARY_DIR})
