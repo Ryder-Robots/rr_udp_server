@@ -5,10 +5,12 @@ using namespace rr_udp_server;
 void RrUdpServerNode::init() {
   // get all the clients and create a reference
   // using safe approach
-  // rclcpp::Node* parent = static_cast<rclcpp::Node*>(this);
   clients_ = factory_.get_deserializers(this->shared_from_this());
 
-  // TODO: link callback so that it gets during packet arrival
+  rclcpp::SubscriptionOptions options;
+  auto topic_callback =  std::bind(&RrUdpServerNode::subscriber_cb, this, std::placeholders::_1);
+  subscription_ =
+      this->create_subscription<udp_msgs::msg::UdpPacket>(TOPIC_SUBSCRIBE, rclcpp::SensorDataQoS(), topic_callback, options);
 }
 
 /**

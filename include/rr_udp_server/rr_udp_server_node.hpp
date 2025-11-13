@@ -25,13 +25,20 @@ class RrUdpServerNode : public rclcpp::Node {
 
   // list of clients that are created by factory are returned back to node.
   std::vector<rclcpp::ClientBase::SharedPtr> clients_;
-
   RrDeserializerFact factory_;
+
+  // Create a subscription to UDP bridge
+  rclcpp::Subscription<udp_msgs::msg::UdpPacket>::SharedPtr subscription_;
+
+  // TODO: Add message topic for health checks.
 
   // following values are kept for heartbeat health messages
   long rx_ = 0;
   long tx_ = 0;
   long err_ = 0;
+
+  const std::string TOPIC_SUBSCRIBE = "/rr/udp_read";
+  const std::string TOPIC_MSG = "/rr/udp_server_msg";
   
 };
 } // namespace rr_udp_server
