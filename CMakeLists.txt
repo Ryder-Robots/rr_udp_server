@@ -14,6 +14,7 @@ find_package(rr_interfaces REQUIRED)
 find_package(udp_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(Protobuf REQUIRED)
+find_package(rr_common_base REQUIRED)
 
 set(PROTO_FILES proto/inbound.proto)
 
@@ -41,6 +42,7 @@ ament_target_dependencies(
   "std_msgs"
   "rr_interfaces"
   "Protobuf"
+  "rr_common_base"
 )
 
 # add_library(rr_udp_server::rr_udp_server_lib ALIAS rr_udp_server_lib)

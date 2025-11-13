@@ -1,6 +1,5 @@
 find_package(ament_cmake_gmock REQUIRED)
 find_package(ament_lint_auto REQUIRED)
-find_package(rr_common_base REQUIRED)
 
 set(ament_cmake_copyright_FOUND TRUE)
 set(ament_cmake_cpplint_FOUND TRUE)

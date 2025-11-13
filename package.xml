@@ -15,10 +15,10 @@
   <depend>std_msgs</depend>
   <depend>rr_interfaces</depend>
   <depend>udp_msgs</depend>
+  <depend>rr_common_base</depend>
 
   <exec_depend>protobuf</exec_depend>
 
-  <test_depend>rr_common_base</test_depend>
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 
