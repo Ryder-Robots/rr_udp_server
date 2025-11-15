@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "generated/inbound.pb.h"
+#include "rr_udp_server/generated/inbound.pb.h"
 #include "rr_udp_server/deserializer.hpp"
 #include "sensor_msgs/msg/joy.hpp"
 #include "rr_interfaces/srv/joy.hpp"

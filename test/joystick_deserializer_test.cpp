@@ -3,7 +3,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "generated/inbound.pb.h"
+#include "rr_udp_server/generated/inbound.pb.h"
 #include "rclcpp/rclcpp.hpp"
 #include "udp_msgs/msg/udp_packet.hpp"
 

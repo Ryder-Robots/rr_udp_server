@@ -21,11 +21,11 @@ set(PROTO_FILES proto/inbound.proto)
 # # Generate source and header from proto files 
 protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS 
   ${PROTO_FILES}
-  PROTOC_OUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated"
+  PROTOC_OUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}/generated"
 )
 
 # # Include directories for protobuf headers and generated headers
-include_directories(${Protobuf_INCLUDE_DIRS} ${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${Protobuf_INCLUDE_DIRS} ${CMAKE_CURRENT_BINARY_DIR} )
 
 add_library(${PROJECT_NAME}_lib 
   src/rr_udp_server_node.cpp 
