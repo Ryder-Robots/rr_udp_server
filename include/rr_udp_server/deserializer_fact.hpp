@@ -4,9 +4,9 @@
 #include <vector>
 
 #include "rclcpp/rclcpp.hpp"
-#include "udp_msgs/msg/udp_packet.hpp"
-#include "rr_udp_server/deserializer.hpp"
 #include "rr_common_base/rr_state_mng_constants.hpp"
+#include "rr_udp_server/deserializer.hpp"
+#include "udp_msgs/msg/udp_packet.hpp"
 
 // deserializers
 #include "rr_udp_server/joystick_deserializer.hpp"
@@ -37,6 +37,13 @@ class RrDeserializerFact {
    */
   std::vector<rclcpp::ClientBase::SharedPtr> get_deserializers(
       std::shared_ptr<rclcpp::Node> node);
+
+ private:
+  std::vector<std::shared_ptr<RrUdpDeserializer>> deserializers_ = {
+
+      // key = 0
+      std::static_pointer_cast<RrUdpDeserializer>(
+          std::make_shared<RrJoystickDeserializer>())};
 };
 } // namespace rr_udp_server
 
