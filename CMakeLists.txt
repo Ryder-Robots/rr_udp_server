@@ -27,7 +27,7 @@ protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS
 # # Include directories for protobuf headers and generated headers
 include_directories(${Protobuf_INCLUDE_DIRS} ${CMAKE_CURRENT_BINARY_DIR} )
 
-add_library(${PROJECT_NAME}_lib 
+add_library(${PROJECT_NAME}_lib STATIC
   src/rr_udp_server_node.cpp 
   src/deserializer_fact.cpp
   src/joystick_deserializer.cpp
@@ -56,7 +56,7 @@ add_executable(${PROJECT_NAME}_node src/main.cpp)
 target_link_libraries(${PROJECT_NAME}_node ${PROJECT_NAME}_lib)
 
 install(TARGETS 
-  ${PROJECT_NAME}_lib
+  # ${PROJECT_NAME}_lib
   ${PROJECT_NAME}_node
   DESTINATION lib/${PROJECT_NAME}
 )

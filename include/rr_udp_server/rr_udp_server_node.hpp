@@ -1,21 +1,19 @@
 #include "rclcpp/rclcpp.hpp"
-#include "udp_msgs/msg/udp_packet.hpp"
 #include "rr_udp_server/deserializer_fact.hpp"
+#include "udp_msgs/msg/udp_packet.hpp"
 
 namespace rr_udp_server {
 class RrUdpServerNode : public rclcpp::Node {
  public:
-  RrUdpServerNode() : rclcpp::Node("rr_udp_server_node") { init(); }
+  RrUdpServerNode() : rclcpp::Node("rr_udp_server_node") {}
   ~RrUdpServerNode() = default;
-
- private:
-
   /**
    * @fn init
    * @brief initilize subscriber
    */
   void init();
 
+ private:
   /**
    * @fn subscriber_cb
    * @param inbound request
@@ -39,6 +37,5 @@ class RrUdpServerNode : public rclcpp::Node {
 
   const std::string TOPIC_SUBSCRIBE = "/udp_read";
   const std::string TOPIC_MSG = "/udp_server_msg";
-  
 };
 } // namespace rr_udp_server

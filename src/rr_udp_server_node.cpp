@@ -3,14 +3,19 @@
 using namespace rr_udp_server;
 
 void RrUdpServerNode::init() {
+  RCLCPP_INFO(this->get_logger(), "creating udp_server node");
   // get all the clients and create a reference
   // using safe approach
-  clients_ = factory_.get_deserializers(this->shared_from_this());
+  RCLCPP_INFO(this->get_logger(), "retrieving clients");
+  clients_ = factory_.get_deserializers(shared_from_this());
 
+  RCLCPP_INFO(this->get_logger(), "creating subscriptions");
   rclcpp::SubscriptionOptions options;
   auto topic_callback =  std::bind(&RrUdpServerNode::subscriber_cb, this, std::placeholders::_1);
   subscription_ =
       this->create_subscription<udp_msgs::msg::UdpPacket>(TOPIC_SUBSCRIBE, rclcpp::SensorDataQoS(), topic_callback, options);
+
+  RCLCPP_DEBUG(this->get_logger(), "subscription created");    
 }
 
 /**
@@ -22,6 +27,7 @@ void RrUdpServerNode::init() {
  *   5.    packet is sent to state service.
  */
 void RrUdpServerNode::subscriber_cb(const udp_msgs::msg::UdpPacket packet) {
+  RCLCPP_DEBUG(this->get_logger(), "recieved packet");
   tx_++;
   bool available = false;
   int key = -1;
