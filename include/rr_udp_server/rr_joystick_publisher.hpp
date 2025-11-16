@@ -2,6 +2,7 @@
 #define RR_JOYSTICK_PUBLISHER_HPP
 
 #include <memory>
+
 #include "rr_udp_server/joystick_deserializer.hpp"
 #include "rr_udp_server/rr_publisher_interface.hpp"
 #include "sensor_msgs/msg/joy.h"
@@ -11,7 +12,8 @@ namespace rr_udp_server {
 class RrJoyStickPublisherNode : public rclcpp::Node {
  public:
   RrJoyStickPublisherNode() : rclcpp::Node("rr_udp_server_joy_node") {}
-  void init();
+  ~RrJoyStickPublisherNode() = default;
+  void init() {}
   const std::string topic_ = "/state/joy";
   rclcpp::Publisher<sensor_msgs::msg::Joy>::SharedPtr publisher_;
 };
