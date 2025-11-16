@@ -14,7 +14,10 @@ class RrJoyStickPublisherNode : public rclcpp::Node {
   RrJoyStickPublisherNode() : rclcpp::Node("rr_udp_server_joy_node") {}
   ~RrJoyStickPublisherNode() = default;
   void init() {}
-  const std::string topic_ = "/state/joy";
+
+  // this should be remapped using the namespace within the launcher
+  // script.
+  const std::string topic_ = "/joy";
   rclcpp::Publisher<sensor_msgs::msg::Joy>::SharedPtr publisher_;
 };
 
