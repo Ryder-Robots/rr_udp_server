@@ -28,8 +28,7 @@ protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS
 include_directories(${Protobuf_INCLUDE_DIRS} ${CMAKE_CURRENT_BINARY_DIR} )
 
 add_library(${PROJECT_NAME}_lib STATIC
-  src/rr_udp_server_node.cpp 
-  src/deserializer_fact.cpp
+  src/rr_udp_server_node.cpp
   src/joystick_deserializer.cpp
   src/rr_joystick_publisher.cpp
   src/rr_publisher_fact.cpp
