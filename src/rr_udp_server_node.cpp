@@ -11,11 +11,12 @@ void RrUdpServerNode::init() {
 
   RCLCPP_INFO(this->get_logger(), "creating subscriptions");
   rclcpp::SubscriptionOptions options;
-  auto topic_callback =  std::bind(&RrUdpServerNode::subscriber_cb, this, std::placeholders::_1);
-  subscription_ =
-      this->create_subscription<udp_msgs::msg::UdpPacket>(TOPIC_SUBSCRIBE, rclcpp::SensorDataQoS(), topic_callback, options);
+  auto topic_callback =
+      std::bind(&RrUdpServerNode::subscriber_cb, this, std::placeholders::_1);
+  subscription_ = this->create_subscription<udp_msgs::msg::UdpPacket>(
+      TOPIC_SUBSCRIBE, rclcpp::SensorDataQoS(), topic_callback, options);
 
-  RCLCPP_DEBUG(this->get_logger(), "subscription created");    
+  RCLCPP_DEBUG(this->get_logger(), "subscription created");
 }
 
 /**
@@ -56,9 +57,15 @@ void RrUdpServerNode::subscriber_cb(const udp_msgs::msg::UdpPacket packet) {
       }
     }
 
+    //TODO For some reason messages to middleware is not working, not sure why this
+    // is,  but possibly better to use a publishing service. 
+    //
+    // Could be publsihgin from this point.
+    //
     // To allow ROS2 middleware to keep reference count to services within the
     // node, services are sent back to the node via factory. Therefore they need
     // to be sent to the deserializer to send request to state service
+    RCLCPP_DEBUG(this->get_logger(), "attempting to send packet");
     if (deserilizer->update_state(clients_[key], this->shared_from_this()) !=
         RrUdpDeserializer::OK()) {
       RCLCPP_ERROR(this->get_logger(),
@@ -68,6 +75,7 @@ void RrUdpServerNode::subscriber_cb(const udp_msgs::msg::UdpPacket packet) {
       return;
     }
     rx_++;
+    RCLCPP_DEBUG(this->get_logger(), "%ld recieved successful packaet", rx_);
   } else {
     RCLCPP_ERROR(
         this->get_logger(),

@@ -45,6 +45,7 @@ class RrJoystickDeserializer : public RrUdpDeserializer {
   const std::string err_str() override;
 
   /**
+   * @deprecated
    * @fn update_state
    * @brief send request to state manager joy service.
    *
@@ -78,9 +79,6 @@ class RrJoystickDeserializer : public RrUdpDeserializer {
    * directly by the controller.
    */
   const std::vector<int> get_buttons();
-
-  // This should be moved to a common base, but it will need to be templated.
-  // std::vector<rclcpp::Client<rr_interfaces::srv::Joy>::FutureAndRequestId> futures_;
 
  private:
   std::vector<float> axes_;  // inbound axes definition.

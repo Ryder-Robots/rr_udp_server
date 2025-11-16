@@ -106,6 +106,7 @@ uint8_t RrJoystickDeserializer::deserialize(
   return status;
 }
 
+// TODO: Service never becomes ready, and it would be more practical to use publishers here!!!!
 // TODO: this looks like a candidate for a base class.
 uint8_t RrJoystickDeserializer::update_state(
     rclcpp::ClientBase::SharedPtr client_ptr, std::shared_ptr<rclcpp::Node> node) {
@@ -116,6 +117,12 @@ uint8_t RrJoystickDeserializer::update_state(
 
   auto request = std::make_shared<rr_interfaces::srv::Joy::Request>();
   auto ticks = std::chrono::duration<int, std::milli>(100);
+
+  sensor_msgs::msg::Joy joy_tx;
+  joy_tx.axes = axes_;
+  joy_tx.buttons = buttons_;
+  // joy_tx.header.frame_id = 
+  request->joystick_tx = joy_tx;
 
   while (!client->wait_for_service(ticks)) {
     if (!rclcpp::ok()) {
