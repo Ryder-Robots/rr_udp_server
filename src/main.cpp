@@ -13,6 +13,7 @@ int main(int argc, char** argv) {
 
   // return nodes from factory, initlize, and add them to executor.
   for (std::shared_ptr<RrPublisherInterface> publisher : fact->get_publishers()) {
+    publisher->init();
     executor.add_node(publisher->get_node());
   }
 

@@ -31,7 +31,6 @@ void RrUdpServerNode::subscriber_cb(const udp_msgs::msg::UdpPacket packet) {
   RCLCPP_DEBUG(this->get_logger(), "recieved packet");
   tx_++;
   bool available = false;
-  int key = -1;
   std::shared_ptr<rr_udp_server::RrPublisherInterface> publisher = factory_->get_publisher(packet, available);
 
   if (available) {
