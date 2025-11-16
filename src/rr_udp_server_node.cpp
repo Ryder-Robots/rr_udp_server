@@ -2,12 +2,12 @@
 
 using namespace rr_udp_server;
 
-void RrUdpServerNode::init() {
+void RrUdpServerNode::init(std::shared_ptr<RrPublisherFact>  factory) {
   RCLCPP_INFO(this->get_logger(), "creating udp_server node");
   // get all the clients and create a reference
   // using safe approach
-  RCLCPP_INFO(this->get_logger(), "retrieving clients");
-  clients_ = factory_.get_deserializers(shared_from_this());
+  RCLCPP_INFO(this->get_logger(), "adding factory");
+  factory_ = factory;
 
   RCLCPP_INFO(this->get_logger(), "creating subscriptions");
   rclcpp::SubscriptionOptions options;
@@ -32,10 +32,10 @@ void RrUdpServerNode::subscriber_cb(const udp_msgs::msg::UdpPacket packet) {
   tx_++;
   bool available = false;
   int key = -1;
-  std::shared_ptr<rr_udp_server::RrUdpDeserializer> deserilizer =
-      factory_.get_deserializer_key(packet, available, key);
+  std::shared_ptr<rr_udp_server::RrPublisherInterface> publisher = factory_->get_publisher(packet, available);
 
   if (available) {
+    std::shared_ptr<RrUdpDeserializer> deserilizer = publisher->get_deserializer();
     deserilizer->reset();
 
     // check for integrity before updating the state
@@ -57,25 +57,11 @@ void RrUdpServerNode::subscriber_cb(const udp_msgs::msg::UdpPacket packet) {
       }
     }
 
-    //TODO For some reason messages to middleware is not working, not sure why this
-    // is,  but possibly better to use a publishing service. 
-    //
-    // Could be publsihgin from this point.
-    //
-    // To allow ROS2 middleware to keep reference count to services within the
-    // node, services are sent back to the node via factory. Therefore they need
-    // to be sent to the deserializer to send request to state service
+
     RCLCPP_DEBUG(this->get_logger(), "attempting to send packet");
-    if (deserilizer->update_state(clients_[key], this->shared_from_this()) !=
-        RrUdpDeserializer::OK()) {
-      RCLCPP_ERROR(this->get_logger(),
-                   "dropping packet: could not write the packet to service: %s",
-                   deserilizer->err_str().c_str());
-      err_++;
-      return;
-    }
+    publisher->update_state();
     rx_++;
-    RCLCPP_DEBUG(this->get_logger(), "%ld recieved successful packaet", rx_);
+    RCLCPP_DEBUG(this->get_logger(), "%ld packet publsihed", rx_);
   } else {
     RCLCPP_ERROR(
         this->get_logger(),

@@ -1,5 +1,5 @@
 #include "rclcpp/rclcpp.hpp"
-#include "rr_udp_server/deserializer_fact.hpp"
+#include "rr_udp_server/rr_publisher_fact.hpp"
 #include "udp_msgs/msg/udp_packet.hpp"
 
 namespace rr_udp_server {
@@ -11,7 +11,7 @@ class RrUdpServerNode : public rclcpp::Node {
    * @fn init
    * @brief initilize subscriber
    */
-  void init();
+  void init(std::shared_ptr<RrPublisherFact>  factory);
 
  private:
   /**
@@ -20,10 +20,7 @@ class RrUdpServerNode : public rclcpp::Node {
    * @brief callback that is used for inbound requests.
    */
   void subscriber_cb(const udp_msgs::msg::UdpPacket packet);
-
-  // list of clients that are created by factory are returned back to node.
-  std::vector<rclcpp::ClientBase::SharedPtr> clients_;
-  RrDeserializerFact factory_;
+  std::shared_ptr<RrPublisherFact> factory_;
 
   // Create a subscription to UDP bridge
   rclcpp::Subscription<udp_msgs::msg::UdpPacket>::SharedPtr subscription_;
